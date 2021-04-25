@@ -1,0 +1,15 @@
+overwrite: true
+schema:
+  - src/state/schema.graphql
+documents: src/**/*.query.tsx
+generates:
+  src/state/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      skipTypename: true
+      withHooks: true
+      withComponent: false
+      withHOC: false

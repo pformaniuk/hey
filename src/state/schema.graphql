@@ -1,0 +1,21 @@
+type Question {
+    id: ID!
+    question: String! 
+    published_at: String!
+    choices: [Choice]
+}
+
+type Choice {
+    choice: String 
+    url: String
+    votes: Int
+}
+
+type Mutation {
+    addQuestion(title: String): Question @client
+}
+
+type Query {
+    getAllQuestions: [Question]
+    getQuestion(id: ID): Question
+}
