@@ -5,7 +5,9 @@ const GET_QUESTION_DETAILS = gql`
     getQuestion(id: $questionId ) @rest(type: "Question", path: "questions/{args.id}" ) {
       question
         choices{
+          choice
           url
+          votes
         }
     }
   }

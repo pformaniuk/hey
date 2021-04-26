@@ -53,7 +53,7 @@ export type GetQuestionDetailsQueryVariables = Exact<{
 
 export type GetQuestionDetailsQuery = { getQuestion?: Maybe<(
     Pick<Question, 'question'>
-    & { choices?: Maybe<Array<Maybe<Pick<Choice, 'url'>>>> }
+    & { choices?: Maybe<Array<Maybe<Pick<Choice, 'choice' | 'url' | 'votes'>>>> }
   )> };
 
 export type GetAllQuestionsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -70,7 +70,9 @@ export const GetQuestionDetailsDocument = gql`
   getQuestion(id: $questionId) @rest(type: "Question", path: "questions/{args.id}") {
     question
     choices {
+      choice
       url
+      votes
     }
   }
 }
