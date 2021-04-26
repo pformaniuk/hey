@@ -44,6 +44,7 @@ export type Question = {
   question: Scalars['String'];
   published_at: Scalars['String'];
   choices?: Maybe<Array<Maybe<Choice>>>;
+  url?: Maybe<Scalars['String']>;
 };
 
 export type GetQuestionDetailsQueryVariables = Exact<{
@@ -60,7 +61,7 @@ export type GetAllQuestionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllQuestionsQuery = { getAllQuestions?: Maybe<Array<Maybe<(
-    Pick<Question, 'question'>
+    Pick<Question, 'question' | 'published_at' | 'url'>
     & { choices?: Maybe<Array<Maybe<Pick<Choice, 'url'>>>> }
   )>>> };
 
@@ -109,6 +110,8 @@ export const GetAllQuestionsDocument = gql`
     query GetAllQuestions {
   getAllQuestions @rest(type: "Question", path: "questions") {
     question
+    published_at
+    url
     choices {
       url
     }

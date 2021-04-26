@@ -14,7 +14,7 @@ function App() {
       <Router>
       <TopBar/>
         <Route path="/" exact component={Questions} />
-        <Route path="/details/:questionId" component={QuestionDetails} />
+        <Route path="/questions/:questionId" component={QuestionDetails} />
         <Route path="/add-question" component={AddQuestion} />
       </Router>
     </ApolloProvider>

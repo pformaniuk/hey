@@ -22,30 +22,23 @@ const useStyles = makeStyles({
   },
 });
 
-export const OutlinedCard = () =>  {
+export const OutlinedCard = (params: { question: any, handleClicks: any}) =>  {
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
-
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Word of the Day
-        </Typography>
         <Typography variant="h5" component="h2">
-          be{bull}nev{bull}o{bull}lent
+          {params.question.question}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          adjective
+          {new Date(params.question.published_at).toDateString()}
         </Typography>
         <Typography variant="body2" component="p">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
+          Possible choices: { params.question.choices.length}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <Button size="small" onClick={params.handleClicks}>Details</Button>
       </CardActions>
     </Card>
   );

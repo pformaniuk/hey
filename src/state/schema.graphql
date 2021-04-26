@@ -3,6 +3,7 @@ type Question {
     question: String! 
     published_at: String!
     choices: [Choice]
+    url: String
 }
 
 type Choice {

@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { clientResolvers } from './clientResolvers';
 import { GetAllQuestionsDocument  } from "./generated/graphql";
