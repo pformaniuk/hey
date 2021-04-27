@@ -1,9 +1,9 @@
-import { Grid, Container } from '@material-ui/core';
+import { Grid, Container} from '@material-ui/core';
 import { useGetAllQuestionsQuery } from '../../state/generated/graphql';
-import { OutlinedCard } from '../../components/Card';
+import { AddQuestionCard, OutlinedCard } from '../../components/Card';
 
 import { useHistory } from 'react-router';
-
+import React from 'react';
 
 export const Questions = () => {
   const { data, loading } = useGetAllQuestionsQuery();
@@ -12,11 +12,11 @@ export const Questions = () => {
   const getAllQuestions = data?.getAllQuestions?.map((el, index) => {
     return (
       <Grid key={index} item xs={12} sm={6} md={4}>
-        <OutlinedCard question = {el} handleClicks={() => {
-            if (el?.url) {
-              history.push(el?.url)
-            }
-          } } />
+        <OutlinedCard question={el} handleClicks={() => {
+          if (el?.url) {
+            history.push(el?.url)
+          }
+        }} />
       </Grid>
     )
   });
@@ -28,10 +28,13 @@ export const Questions = () => {
   }
 
   return (<>
-    <Container maxWidth="md">
+    <Container maxWidth="md" >
       <h1>Questions</h1>
-      <Grid container spacing={4} >
-        {getAllQuestions }
+      <Grid container spacing={4} alignItems="center" >
+        {getAllQuestions}
+        <Grid key={'sd'} item xs={12} sm={6} md={4}>
+        <AddQuestionCard/>
+        </Grid>
       </Grid>
     </Container>
   </>)
