@@ -45,7 +45,7 @@ export const AddQuestionCard = () => {
     <Card className={classes.root} variant="outlined">
       <CardActionArea
         component="a"
-        href="/add-question">
+        href="/addquestion">
         <CardContent className={classes.addIcon}>
           <Typography variant="h5" component="h2">+
           </Typography>

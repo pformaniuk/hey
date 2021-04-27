@@ -11,7 +11,7 @@ export const AddQuestion = () => {
     const values = [...inputFields];
 
     values[index] = event.target.value;
-    
+
     setInputFields(values);
   };
 
@@ -21,7 +21,7 @@ export const AddQuestion = () => {
     setInputFields(values);
   };
 
-  const handleRemoveFields = (index:number) => {
+  const handleRemoveFields = (index: number) => {
     const values = [...inputFields];
     values.splice(index, 1);
     setInputFields(values);
@@ -33,19 +33,19 @@ export const AddQuestion = () => {
       <>
         <div>
           <label>
-            Question:
+            Choice {index + 1}:
           <input
               type="text"
               className="form-control"
-              id="firstName"
-              name="firstName"
+              id="choice"
+              name="choice"
               value={el}
               onChange={event => handleInputChange(index, event)}
             />
           </label>
           <div>
             <Button onClick={handleAddFields}> + </Button>
-            {index > 0 && <Button onClick={() => {handleRemoveFields(index)} }> - </Button>}
+            {index > 0 && <Button onClick={() => { handleRemoveFields(index) }}> - </Button>}
           </div>
         </div>
       </>
@@ -55,8 +55,17 @@ export const AddQuestion = () => {
   return (
     <Container maxWidth="md">
       <div >
-
         <form>
+        <label>
+            Question
+          <input
+              type="text"
+              className="form-control"
+              id="question"
+              name="question"
+              value={'wdw'}
+            />
+          </label>
           {inputs}
         </form>
 
