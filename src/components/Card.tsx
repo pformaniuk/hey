@@ -44,7 +44,7 @@ export const OutlinedCard = (params: { question: any, handleClicks: any }) => {
 export const AddQuestionCard = () => {
   const classes = useStyles();
   const history = useHistory();
-  const handleClick = useCallback(() => history.push('/addquestion'), [history]);
+  const handleClick = useCallback(() => history.push('/add-question'), [history]);
   return (
     <Card className={classes.root} variant="outlined">
       <CardActionArea
