@@ -4,6 +4,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { useCallback } from 'react';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles({
   root: {
@@ -41,11 +43,13 @@ export const OutlinedCard = (params: { question: any, handleClicks: any }) => {
 
 export const AddQuestionCard = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const handleClick = useCallback(() => history.push('/addquestion'), [history]);
   return (
     <Card className={classes.root} variant="outlined">
       <CardActionArea
         component="a"
-        href="/addquestion">
+        onClick={handleClick}>
         <CardContent className={classes.addIcon}>
           <Typography variant="h5" component="h2">+
           </Typography>

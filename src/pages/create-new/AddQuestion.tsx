@@ -53,25 +53,24 @@ export const AddQuestion = () => {
   });
 
   return (
-    // <Container maxWidth="md">
-    //   <div >
-    //     <form>
-    //     <label>
-    //         Question
-    //       <input
-    //           type="text"
-    //           className="form-control"
-    //           id="question"
-    //           name="question"
-    //           value={'wdw'}
-    //         />
-    //       </label>
-    //       {inputs}
-    //     </form>
+    <Container maxWidth="md">
+      <div >
+        <form>
+        <label>
+            Question
+          <input
+              type="text"
+              className="form-control"
+              id="question"
+              name="question"
+              value={'wdw'}
+            />
+          </label>
+          {inputs}
+        </form>
 
-    //     <Button variant="contained" color="primary" onClick={handleClick}>Save Vote </Button>
-    //   </div>
-    // </Container>
-    <div>eee</div>
+        <Button variant="contained" color="primary" onClick={handleClick}>Save Vote </Button>
+      </div>
+    </Container>
   );
 }
