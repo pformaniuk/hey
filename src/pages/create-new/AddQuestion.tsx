@@ -6,55 +6,70 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 export const AddQuestion = () => {
   const history = useHistory();
-  const handleClick = useCallback(() => history.push('/'), [history]);
   const [inputFields, setInputFields] = useState<string[]>(['']);
   const [questionField, setQuestionField] = useState<string>('');
 
-  const handleInputChange = (index: number, event: any) => {
-    const values = [...inputFields];
+  const handleClick = useCallback(() => {
+    history.push('/');
+    console.log(prepareData(questionField, inputFields));
+  }, [inputFields, questionField, history]);
 
-    values[index] = event.target.value;
+const handleInputChange = (index: number, event: any) => {
+  const values = [...inputFields];
 
-    setInputFields(values);
-  };
+  values[index] = event.target.value;
 
-  const handleAddFields = () => {
-    const values = [...inputFields];
-    values.push('');
-    setInputFields(values);
-  };
+  setInputFields(values);
+};
 
-  const handleRemoveFields = (index: number) => {
-    const values = [...inputFields];
-    values.splice(index, 1);
-    setInputFields(values);
-  };
+const handleAddFields = () => {
+  const values = [...inputFields];
+  values.push('');
+  setInputFields(values);
+};
 
+const handleRemoveFields = (index: number) => {
+  const values = [...inputFields];
+  values.splice(index, 1);
+  setInputFields(values);
+};
 
-  const inputs = inputFields.map((el, index) => {
-    return (
-      <>
-        <div style={{ display: 'flex' }}>
-          <TextField style={{ width: "calc( 100% - 140px)" }} id="standard-basic" label="Choice" value={el} onChange={event => handleInputChange(index, event)} />
-          <div style={{ display: 'flex', marginTop: '10px' }} >
-            <Button onClick={handleAddFields}> <AddIcon /> </Button>
-            <Button onClick={() => { handleRemoveFields(index) }}> <DeleteIcon /> </Button>
-          </div>
-        </div>
-      </>
-    );
-  });
+const prepareData = (question: string, choices: string[]) => {
+  const relevantChoices = choices.filter(e => e.length);
 
+  if (!question.length || !relevantChoices.length) {
+    return null;
+  }
+
+  return { choices: relevantChoices, question };
+}
+
+const inputs = inputFields.map((el, index) => {
   return (
-    <Container maxWidth="sm">
-      <h1>Add new question</h1>
-      <form noValidate autoComplete="off">
-        <TextField style={{ width: "calc( 100% - 140px)" }} onChange={event => setQuestionField(event.target.value)} id="question" label="Question" value={questionField} />
-        {inputs}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: '2em'}}>
-          <Button style={{ marginTop: '2em' }} variant="contained" color="primary" onClick={handleClick}>Add question</Button>
+    <>
+      <div style={{ display: 'flex' }}>
+        <TextField style={{ width: "calc( 100% - 140px)" }} id="standard-basic" label="Choice" value={el} onChange={event => handleInputChange(index, event)} />
+        <div style={{ display: 'flex', marginTop: '10px' }} >
+          <Button onClick={handleAddFields}> <AddIcon /> </Button>
+          <Button disabled={inputFields.length < 2}
+
+            onClick={() => { handleRemoveFields(index) }}> <DeleteIcon /> </Button>
         </div>
-      </form>
-    </Container>
+      </div>
+    </>
   );
+});
+
+return (
+  <Container maxWidth="sm">
+    <h1>Add new question</h1>
+    <form noValidate autoComplete="off">
+      <TextField style={{ width: "calc( 100% - 140px)" }} onChange={event => setQuestionField(event.target.value)} id="question" label="Question" value={questionField} />
+      {inputs}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: '2em' }}>
+        <Button style={{ marginTop: '2em' }} variant="contained" color="primary" onClick={handleClick}>Add question</Button>
+      </div>
+    </form>
+  </Container>
+);
 }
