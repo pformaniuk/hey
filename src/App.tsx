@@ -13,7 +13,7 @@ function App() {
       <Router>
         <Route path="/" exact component={Questions} />
         <Route path="/questions/:questionId" component={QuestionDetails} />
-        <Route path="/add-question" component={AddQuestion} />
+        <Route path="/addquestion" component={AddQuestion} />
       </Router>
     </ApolloProvider>
   );
