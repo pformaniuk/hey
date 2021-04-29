@@ -12,8 +12,19 @@ type Choice {
     votes: Int
 }
 
+input ChoiceInput {
+    choice: String 
+    url: String
+    votes: Int
+}
+
+input PublishablePostInput {
+    question: String!
+    choices: [String] 
+}
+
 type Mutation {
-    addQuestion(title: String): Question @client
+    addQuestion(body: PublishablePostInput): Question
 }
 
 type Query {

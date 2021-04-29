@@ -20,13 +20,24 @@ export type Choice = {
   votes?: Maybe<Scalars['Int']>;
 };
 
+export type ChoiceInput = {
+  choice?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+  votes?: Maybe<Scalars['Int']>;
+};
+
 export type Mutation = {
   addQuestion?: Maybe<Question>;
 };
 
 
 export type MutationAddQuestionArgs = {
-  title?: Maybe<Scalars['String']>;
+  body?: Maybe<PublishablePostInput>;
+};
+
+export type PublishablePostInput = {
+  question: Scalars['String'];
+  choices?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type Query = {
@@ -47,6 +58,16 @@ export type Question = {
   url?: Maybe<Scalars['String']>;
 };
 
+export type AddNewQuestionMutationVariables = Exact<{
+  newQuestionData: PublishablePostInput;
+}>;
+
+
+export type AddNewQuestionMutation = { addQuestion?: Maybe<(
+    Pick<Question, 'question'>
+    & { choices?: Maybe<Array<Maybe<Pick<Choice, 'choice' | 'url' | 'votes'>>>> }
+  )> };
+
 export type GetQuestionDetailsQueryVariables = Exact<{
   questionId: Scalars['ID'];
 }>;
@@ -66,6 +87,44 @@ export type GetAllQuestionsQuery = { getAllQuestions?: Maybe<Array<Maybe<(
   )>>> };
 
 
+export const AddNewQuestionDocument = gql`
+    mutation AddNewQuestion($newQuestionData: PublishablePostInput!) {
+  addQuestion(body: $newQuestionData) @rest(type: "Post", path: "questions", method: "POST", bodyKey: "body") {
+    question
+    choices {
+      choice
+      url
+      votes
+    }
+  }
+}
+    `;
+export type AddNewQuestionMutationFn = Apollo.MutationFunction<AddNewQuestionMutation, AddNewQuestionMutationVariables>;
+
+/**
+ * __useAddNewQuestionMutation__
+ *
+ * To run a mutation, you first call `useAddNewQuestionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddNewQuestionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addNewQuestionMutation, { data, loading, error }] = useAddNewQuestionMutation({
+ *   variables: {
+ *      newQuestionData: // value for 'newQuestionData'
+ *   },
+ * });
+ */
+export function useAddNewQuestionMutation(baseOptions?: Apollo.MutationHookOptions<AddNewQuestionMutation, AddNewQuestionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddNewQuestionMutation, AddNewQuestionMutationVariables>(AddNewQuestionDocument, options);
+      }
+export type AddNewQuestionMutationHookResult = ReturnType<typeof useAddNewQuestionMutation>;
+export type AddNewQuestionMutationResult = Apollo.MutationResult<AddNewQuestionMutation>;
+export type AddNewQuestionMutationOptions = Apollo.BaseMutationOptions<AddNewQuestionMutation, AddNewQuestionMutationVariables>;
 export const GetQuestionDetailsDocument = gql`
     query GetQuestionDetails($questionId: ID!) {
   getQuestion(id: $questionId) @rest(type: "Question", path: "questions/{args.id}") {
