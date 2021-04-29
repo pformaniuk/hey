@@ -6,8 +6,15 @@ type Question {
     url: String
 }
 
+input QuestionInput {
+    question: String! 
+    published_at: String!
+    choices: [ChoiceInput]
+    url: String
+}
+
 type Choice {
-    choice: String 
+    choice: String
     url: String
     votes: Int
 }
@@ -24,7 +31,8 @@ input PublishablePostInput {
 }
 
 type Mutation {
-    addQuestion(body: PublishablePostInput): Question
+    addQuestion(body: PublishablePostInput): Question!
+    cacheNewQuestion(newQuestion: QuestionInput): Question
 }
 
 type Query {

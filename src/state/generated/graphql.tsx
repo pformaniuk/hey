@@ -27,12 +27,18 @@ export type ChoiceInput = {
 };
 
 export type Mutation = {
-  addQuestion?: Maybe<Question>;
+  addQuestion: Question;
+  cacheNewQuestion?: Maybe<Question>;
 };
 
 
 export type MutationAddQuestionArgs = {
   body?: Maybe<PublishablePostInput>;
+};
+
+
+export type MutationCacheNewQuestionArgs = {
+  newQuestion?: Maybe<QuestionInput>;
 };
 
 export type PublishablePostInput = {
@@ -58,12 +64,29 @@ export type Question = {
   url?: Maybe<Scalars['String']>;
 };
 
+export type QuestionInput = {
+  question: Scalars['String'];
+  published_at: Scalars['String'];
+  choices?: Maybe<Array<Maybe<ChoiceInput>>>;
+  url?: Maybe<Scalars['String']>;
+};
+
 export type AddNewQuestionMutationVariables = Exact<{
   newQuestionData: PublishablePostInput;
 }>;
 
 
-export type AddNewQuestionMutation = { addQuestion?: Maybe<(
+export type AddNewQuestionMutation = { addQuestion: (
+    Pick<Question, 'question' | 'published_at'>
+    & { choices?: Maybe<Array<Maybe<Pick<Choice, 'choice' | 'url' | 'votes'>>>> }
+  ) };
+
+export type CacheNewQuestionMutationVariables = Exact<{
+  newQuestionData: QuestionInput;
+}>;
+
+
+export type CacheNewQuestionMutation = { cacheNewQuestion?: Maybe<(
     Pick<Question, 'question'>
     & { choices?: Maybe<Array<Maybe<Pick<Choice, 'choice' | 'url' | 'votes'>>>> }
   )> };
@@ -89,8 +112,9 @@ export type GetAllQuestionsQuery = { getAllQuestions?: Maybe<Array<Maybe<(
 
 export const AddNewQuestionDocument = gql`
     mutation AddNewQuestion($newQuestionData: PublishablePostInput!) {
-  addQuestion(body: $newQuestionData) @rest(type: "Post", path: "questions", method: "POST", bodyKey: "body") {
+  addQuestion(body: $newQuestionData) @rest(type: "Question", path: "questions", method: "POST", bodyKey: "body") {
     question
+    published_at
     choices {
       choice
       url
@@ -125,6 +149,44 @@ export function useAddNewQuestionMutation(baseOptions?: Apollo.MutationHookOptio
 export type AddNewQuestionMutationHookResult = ReturnType<typeof useAddNewQuestionMutation>;
 export type AddNewQuestionMutationResult = Apollo.MutationResult<AddNewQuestionMutation>;
 export type AddNewQuestionMutationOptions = Apollo.BaseMutationOptions<AddNewQuestionMutation, AddNewQuestionMutationVariables>;
+export const CacheNewQuestionDocument = gql`
+    mutation CacheNewQuestion($newQuestionData: QuestionInput!) {
+  cacheNewQuestion(newQuestion: $newQuestionData) @client {
+    question
+    choices {
+      choice
+      url
+      votes
+    }
+  }
+}
+    `;
+export type CacheNewQuestionMutationFn = Apollo.MutationFunction<CacheNewQuestionMutation, CacheNewQuestionMutationVariables>;
+
+/**
+ * __useCacheNewQuestionMutation__
+ *
+ * To run a mutation, you first call `useCacheNewQuestionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCacheNewQuestionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [cacheNewQuestionMutation, { data, loading, error }] = useCacheNewQuestionMutation({
+ *   variables: {
+ *      newQuestionData: // value for 'newQuestionData'
+ *   },
+ * });
+ */
+export function useCacheNewQuestionMutation(baseOptions?: Apollo.MutationHookOptions<CacheNewQuestionMutation, CacheNewQuestionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CacheNewQuestionMutation, CacheNewQuestionMutationVariables>(CacheNewQuestionDocument, options);
+      }
+export type CacheNewQuestionMutationHookResult = ReturnType<typeof useCacheNewQuestionMutation>;
+export type CacheNewQuestionMutationResult = Apollo.MutationResult<CacheNewQuestionMutation>;
+export type CacheNewQuestionMutationOptions = Apollo.BaseMutationOptions<CacheNewQuestionMutation, CacheNewQuestionMutationVariables>;
 export const GetQuestionDetailsDocument = gql`
     query GetQuestionDetails($questionId: ID!) {
   getQuestion(id: $questionId) @rest(type: "Question", path: "questions/{args.id}") {

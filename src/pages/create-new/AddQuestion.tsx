@@ -3,24 +3,29 @@ import { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { useAddNewQuestionMutation } from '../../state/generated/graphql';
+import { useAddNewQuestionMutation, useCacheNewQuestionMutation } from '../../state/generated/graphql';
 
 export const AddQuestion = () => {
   const history = useHistory();
-  const [inputFields, setInputFields] = useState<string[]>(['']);
+  const [inputFields, setInputFields] = useState<string[]>(['', '']);
   const [questionField, setQuestionField] = useState<string>('');
   const [addNewQuestionMutation, { data, loading, error }] = useAddNewQuestionMutation();
-
-  const handleClick = useCallback(() => {
-    history.push('/');
-    addNewQuestionMutation({
+  const [ cacheNewQuestionMutation ] = useCacheNewQuestionMutation();
+  const handleClick = useCallback( async () => {
+    const { data } = await addNewQuestionMutation({
       variables: {
         newQuestionData: {
           question: questionField,
           choices: inputFields
         }
       }
-    }).finally(() => { history.push('/'); })
+    })
+    
+    if (data) {
+      await cacheNewQuestionMutation({variables: { newQuestionData : data.addQuestion }});
+    }
+
+    history.push('/');
   }, [inputFields, questionField, history, addNewQuestionMutation]);
 
   const handleInputChange = (index: number, event: any) => {
@@ -60,7 +65,7 @@ export const AddQuestion = () => {
           <TextField style={{ width: "calc( 100% - 140px)" }} id="standard-basic" label="Choice" value={el} onChange={event => handleInputChange(index, event)} />
           <div style={{ display: 'flex', marginTop: '10px' }} >
             <Button onClick={handleAddFields}> <AddIcon /> </Button>
-            <Button disabled={inputFields.length < 2}
+            <Button disabled={inputFields.length < 3}
               onClick={() => { handleRemoveFields(index) }}> <DeleteIcon /> </Button>
           </div>
         </div>
