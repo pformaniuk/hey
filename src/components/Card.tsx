@@ -9,10 +9,10 @@ import { useHistory } from 'react-router';
 
 const useStyles = makeStyles({
   root: {
-    minHeight: 150,
+    minHeight: 120,
   },
   addIcon: {
-    minHeight: 150,
+    minHeight: 120,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

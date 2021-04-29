@@ -12,6 +12,11 @@ export const AddQuestion = () => {
   const [addNewQuestionMutation] = useAddNewQuestionMutation();
   const [ cacheNewQuestionMutation ] = useCacheNewQuestionMutation();
   const handleClick = useCallback( async () => {
+
+    if (questionField.length === 0 || inputFields[0].length === 0 || inputFields[1].length === 0) {
+      return
+    }
+
     const { data } = await addNewQuestionMutation({
       variables: {
         newQuestionData: {
