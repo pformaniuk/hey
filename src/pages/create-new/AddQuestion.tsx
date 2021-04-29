@@ -9,7 +9,7 @@ export const AddQuestion = () => {
   const history = useHistory();
   const [inputFields, setInputFields] = useState<string[]>(['', '']);
   const [questionField, setQuestionField] = useState<string>('');
-  const [addNewQuestionMutation, { data, loading, error }] = useAddNewQuestionMutation();
+  const [addNewQuestionMutation] = useAddNewQuestionMutation();
   const [ cacheNewQuestionMutation ] = useCacheNewQuestionMutation();
   const handleClick = useCallback( async () => {
     const { data } = await addNewQuestionMutation({
@@ -26,7 +26,7 @@ export const AddQuestion = () => {
     }
 
     history.push('/');
-  }, [inputFields, questionField, history, addNewQuestionMutation]);
+  }, [inputFields, questionField, history, addNewQuestionMutation, cacheNewQuestionMutation]);
 
   const handleInputChange = (index: number, event: any) => {
     const values = [...inputFields];
@@ -47,16 +47,6 @@ export const AddQuestion = () => {
     values.splice(index, 1);
     setInputFields(values);
   };
-
-  const prepareData = (question: string, choices: string[]) => {
-    const relevantChoices = choices.filter(e => e.length);
-
-    if (!question.length || !relevantChoices.length) {
-      return null;
-    }
-
-    return { choices: relevantChoices, question };
-  }
 
   const inputs = inputFields.map((el, index) => {
     return (
